@@ -1,0 +1,12 @@
+plugins:
+  TaskToTaskWorkflow:
+    orbit: orbit/Orbit
+  TaskToTwistWorkflow:
+    orbit: project11_navigation/TaskToTwistStack
+  TaskWrapper:
+    orbit: orbit/OrbitTask
+
+TaskToTwistWorkflow/orbit:
+  steps:
+    - orbit
+  last_step: path_follower

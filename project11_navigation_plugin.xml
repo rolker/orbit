@@ -1,0 +1,14 @@
+<library path="lib/liborbit_plugins">
+  <class name="orbit/Orbit" type="orbit::Orbit" base_class_type="project11_navigation::TaskToTaskWorkflow">
+    <description>
+      A planner that circles a target.
+    </description>
+  </class>
+
+  <class base_class_type="project11_navigation::TaskWrapper"
+      type="orbit::OrbitTask"
+      name="orbit/OrbitTask">
+  <description>Project11 Navigation wrapper for an orbit task.</description>
+  </class>
+
+</library>
