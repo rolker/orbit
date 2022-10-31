@@ -86,9 +86,9 @@ bool Orbit::getResult(std::shared_ptr<project11_navigation::Task>& output)
     if(odom.header.frame_id != target_.header.frame_id)
       try
       {
-        ROS_INFO_STREAM_THROTTLE(1.0,"odom frame: " << odom.header.frame_id << " orbit target frame: " << target_.header.frame_id);
         auto t = context_->tfBuffer().lookupTransform(odom.header.frame_id, target_.header.frame_id, ros::Time(0));
         tf2::doTransform(target_.point, target_map, t);
+        ROS_INFO_STREAM_THROTTLE(1.0,"odom frame: " << odom.header.frame_id << " orbit target frame: " << target_.header.frame_id << " target point: " << target_.point << " maped: " << target_map << " t: " << t);
       }
       catch (tf2::TransformException &ex)
       {
