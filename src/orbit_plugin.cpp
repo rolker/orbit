@@ -19,7 +19,7 @@ void Orbit::configure(std::string name, project11_navigation::Context::Ptr conte
   nh.param("output_task_name", output_task_name_, output_task_name_);
 }
 
-void Orbit::setGoal(const std::shared_ptr<project11_navigation::Task>& input)
+void Orbit::setGoal(const boost::shared_ptr<project11_navigation::Task>& input)
 {
   ROS_INFO_STREAM("orbit goal");
   input_task_ = input;
@@ -46,7 +46,7 @@ void Orbit::setGoal(const std::shared_ptr<project11_navigation::Task>& input)
       }
     if(!output_task_)
     {
-      output_task_ = input_task_->createChildTaskBefore(std::shared_ptr<project11_navigation::Task>(),output_task_type_);
+      output_task_ = input_task_->createChildTaskBefore(project11_navigation::Task::Ptr(),output_task_type_);
       input_task_->setChildID(output_task_, output_task_name_);
     }
     auto out_msg = output_task_->message();
@@ -63,7 +63,7 @@ bool Orbit::running()
   return false;
 }
 
-bool Orbit::getResult(std::shared_ptr<project11_navigation::Task>& output)
+bool Orbit::getResult(project11_navigation::Task::Ptr& output)
 {
   if(output_task_)
   {

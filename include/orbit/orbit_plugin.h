@@ -11,13 +11,13 @@ class Orbit: public project11_navigation::TaskToTaskWorkflow
 {
 public:
   void configure(std::string name, project11_navigation::Context::Ptr context) override;
-  void setGoal(const std::shared_ptr<project11_navigation::Task>& input) override;
+  void setGoal(const project11_navigation::Task::Ptr& input) override;
   bool running() override;
-  bool getResult(std::shared_ptr<project11_navigation::Task>& output) override;
+  bool getResult(boost::shared_ptr<project11_navigation::Task>& output) override;
 private:
   project11_navigation::Context::Ptr context_;
-  std::shared_ptr<project11_navigation::Task> input_task_;
-  std::shared_ptr<project11_navigation::Task> output_task_;
+  boost::shared_ptr<project11_navigation::Task> input_task_;
+  boost::shared_ptr<project11_navigation::Task> output_task_;
 
   geometry_msgs::PointStamped target_;
   double default_radius_ = 250.0;

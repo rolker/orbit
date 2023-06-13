@@ -3,28 +3,28 @@
 #include <pluginlib/class_list_macros.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
-PLUGINLIB_EXPORT_CLASS(orbit::OrbitTask, project11_navigation::TaskWrapper)
+PLUGINLIB_EXPORT_CLASS(orbit::OrbitTask, project11_navigation::Task)
 
 namespace orbit
 {
 
-void OrbitTask::updateTransit(const geometry_msgs::PoseStamped& from_pose, geometry_msgs::PoseStamped& out_pose)
+void OrbitTask::updateTransit(const geometry_msgs::PoseStamped& from_pose, geometry_msgs::PoseStamped& out_pose, std::shared_ptr<p11n::Context> context)
 {
   ROS_INFO_STREAM("OrbitTask::updateTransit");
-  if(!task_->message().poses.empty())
+  if(!message().poses.empty())
   {
-    auto target = task_->message().poses.front();
-    auto odom = context_->getOdometry();
-    auto data = task_->data();
+    auto target = message().poses.front();
+    auto odom = context->getOdometry();
+    auto task_data = data();
     auto radius = 10.0;
-    if(data["radius"])
-      radius = data["radius"].as<double>();
+    if(task_data["radius"])
+      radius = task_data["radius"].as<double>();
     
     geometry_msgs::Point target_map = target.pose.position;
     if(odom.header.frame_id != target.header.frame_id)
       try
       {
-        auto t = context_->tfBuffer().lookupTransform(odom.header.frame_id, target.header.frame_id, ros::Time(0));
+        auto t = context->tfBuffer().lookupTransform(odom.header.frame_id, target.header.frame_id, ros::Time(0));
         tf2::doTransform(target.pose.position, target_map, t);
       }
       catch (tf2::TransformException &ex)
@@ -54,25 +54,14 @@ void OrbitTask::updateTransit(const geometry_msgs::PoseStamped& from_pose, geome
   out_pose = from_pose;
 }
 
-std::shared_ptr<p11n::Task> OrbitTask::getCurrentNavigationTask()
+boost::shared_ptr<p11n::Task> OrbitTask::getCurrentNavigationTask()
 {
-  for(auto t: task_->children().tasksByPriority(true))
+  for(auto t: children().tasksByPriority(true))
   {
     if(t->message().type == "transit")
       return t;
   }
-  return task_;
+  return self();
 }
-
-void OrbitTask::configure(std::string name, std::shared_ptr<p11n::Context> context)
-{
-
-}
-
-void OrbitTask::getPreviewDisplay(visualization_msgs::MarkerArray& marker_array)
-{
-
-}
-
 
 } // namespace orbit
