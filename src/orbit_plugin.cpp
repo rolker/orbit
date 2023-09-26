@@ -102,7 +102,7 @@ bool Orbit::getResult(project11_navigation::Task::Ptr& output)
     double dy = odom.pose.pose.position.y-target_map.y;
     
     auto start_angle = atan2(dy,dx);
-    auto dangle =  2*M_PI*step_size_/radius;
+    auto dangle =  step_size_/radius;
 
     auto out_msg = output_task_->message();
     out_msg.poses.clear();
