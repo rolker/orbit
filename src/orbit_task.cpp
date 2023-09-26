@@ -10,7 +10,6 @@ namespace orbit
 
 void OrbitTask::updateTransit(const geometry_msgs::PoseStamped& from_pose, geometry_msgs::PoseStamped& out_pose, std::shared_ptr<p11n::Context> context)
 {
-  ROS_INFO_STREAM("OrbitTask::updateTransit");
   if(!message().poses.empty())
   {
     auto target = message().poses.front();

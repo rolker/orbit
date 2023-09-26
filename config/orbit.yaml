@@ -3,7 +3,7 @@ plugins:
     orbit: orbit/Orbit
   TaskToTwistWorkflow:
     orbit: project11_navigation/TaskToTwistStack
-  TaskWrapper:
+  Tasks:
     orbit: orbit/OrbitTask
 
 TaskToTwistWorkflow/orbit:

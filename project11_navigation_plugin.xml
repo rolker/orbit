@@ -5,7 +5,7 @@
     </description>
   </class>
 
-  <class base_class_type="project11_navigation::TaskWrapper"
+  <class base_class_type="project11_navigation::Task"
       type="orbit::OrbitTask"
       name="orbit/OrbitTask">
   <description>Project11 Navigation wrapper for an orbit task.</description>

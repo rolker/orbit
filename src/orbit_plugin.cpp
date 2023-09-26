@@ -21,7 +21,6 @@ void Orbit::configure(std::string name, project11_navigation::Context::Ptr conte
 
 void Orbit::setGoal(const boost::shared_ptr<project11_navigation::Task>& input)
 {
-  ROS_INFO_STREAM("orbit goal");
   input_task_ = input;
   output_task_.reset();
   if(input_task_)
@@ -88,7 +87,7 @@ bool Orbit::getResult(project11_navigation::Task::Ptr& output)
       {
         auto t = context_->tfBuffer().lookupTransform(odom.header.frame_id, target_.header.frame_id, ros::Time(0));
         tf2::doTransform(target_.point, target_map, t);
-        ROS_INFO_STREAM_THROTTLE(1.0,"odom frame: " << odom.header.frame_id << " orbit target frame: " << target_.header.frame_id << " target point: " << target_.point << " maped: " << target_map << " t: " << t);
+        ROS_DEBUG_STREAM_THROTTLE(1.0,"odom frame: " << odom.header.frame_id << " orbit target frame: " << target_.header.frame_id << " target point: " << target_.point << " mapped: " << target_map << " t: " << t);
       }
       catch (tf2::TransformException &ex)
       {
@@ -113,17 +112,15 @@ bool Orbit::getResult(project11_navigation::Task::Ptr& output)
     out_msg.poses.push_back(out_pose);
 
     ros::Time next_time;
+    auto current_distance = sqrt(dx*dx+dy*dy);
     if(speed)
-    {
-      auto current_distance = sqrt(dx*dx+dy*dy);
       next_time = odom.header.stamp + ros::Duration(std::abs(radius-current_distance)/speed);
-    }
 
     double angle = start_angle+dangle;
     while(angle < start_angle+M_PI*2.0)
     {
-      out_pose.pose.position.x = radius*cos(angle);
-      out_pose.pose.position.y = radius*sin(angle);
+      out_pose.pose.position.x = radius*cos(angle) + target_map.x;
+      out_pose.pose.position.y = radius*sin(angle) + target_map.y;
       out_pose.header.stamp = next_time;
       out_msg.poses.push_back(out_pose);
       angle += dangle;
