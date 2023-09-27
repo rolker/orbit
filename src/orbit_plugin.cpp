@@ -95,12 +95,13 @@ bool Orbit::getResult(project11_navigation::Task::Ptr& output)
         return false;
       }
 
-    if (safety_distance < radius && abs(target_map.z))
-      radius = sqrt(pow(safety_distance, 2.0)-pow(target_map.z, 2.0));
-
     double dx = odom.pose.pose.position.x-target_map.x;
     double dy = odom.pose.pose.position.y-target_map.y;
+    double dz = odom.pose.pose.position.z-target_map.z;
     
+    auto safety_radius = sqrt(pow(safety_distance, 2.0)-pow(dz, 2.0));
+    radius = std::max(radius, safety_radius);
+
     auto start_angle = atan2(dy,dx);
     auto dangle =  step_size_/radius;
 
