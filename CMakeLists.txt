@@ -14,13 +14,6 @@ find_package(catkin REQUIRED COMPONENTS
   pluginlib
 )
 
-generate_messages(
-  DEPENDENCIES
-  std_msgs
-  geometry_msgs
-  geographic_msgs
-)
-
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES orbit
