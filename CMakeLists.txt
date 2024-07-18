@@ -1,8 +1,7 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(orbit)
 
-## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++11)
+set(CMAKE_CXX_STANDARD 14)
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
@@ -36,7 +35,7 @@ add_library(orbit_plugins ${PLUGIN_SOURCES})
 add_dependencies(orbit_plugins ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(orbit_plugins
     ${catkin_LIBRARIES}
-    project11_navigation
+    #project11_navigation
     )
 
 install(TARGETS orbit_plugins 
